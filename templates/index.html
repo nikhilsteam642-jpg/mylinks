@@ -250,9 +250,27 @@
           </a>
         </div>
 
-        <div class="card-footer-note">
-          Your public link: <code>/u/{{ g.user["username"] }}</code>
-        </div>
+        <<div class="card-footer-note">
+  Your public link:
+  <code id="publicLink">/u/{{ g.user["username"] }}</code>
+
+  <button
+    type="button"
+    id="copyLinkBtn"
+    class="btn btn-ghost small-btn"
+    style="margin-left: 0.5rem;"
+  >
+    🔗 Copy Link
+  </button>
+</div>
+
+<p
+  id="copyMsg"
+  style="font-size: 0.75rem; color: #9ca3af; display: none; margin-top: 0.5rem;"
+>
+  ✅ Link copied to clipboard!
+</p>
+
       </div>
     </div>
   </section>

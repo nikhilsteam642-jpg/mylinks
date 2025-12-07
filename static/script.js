@@ -1,3 +1,5 @@
+// 🌸 ----------- LIVE PREVIEW UPDATE -----------
+
 const nameInput = document.getElementById("name");
 const bioInput = document.getElementById("bio");
 const instagramInput = document.getElementById("instagram");
@@ -64,11 +66,9 @@ function updatePreview() {
   }
 }
 
+// Run live preview listeners
 document.addEventListener("DOMContentLoaded", () => {
-  // Initial state (for values loaded from server)
   updatePreview();
-
-  // Live update when typing
   [
     nameInput,
     bioInput,
@@ -80,8 +80,59 @@ document.addEventListener("DOMContentLoaded", () => {
     customLabelInput,
     customUrlInput,
   ].forEach((input) => {
-    if (input) {
-      input.addEventListener("input", updatePreview);
+    if (input) input.addEventListener("input", updatePreview);
+  });
+});
+
+// 🌟 ----------- COPY PROFILE LINK FEATURE -----------
+
+document.addEventListener("DOMContentLoaded", () => {
+  const copyBtn = document.getElementById("copyLinkBtn");
+  const publicLink = document.getElementById("publicLink");
+
+  if (!copyBtn || !publicLink) return;
+
+  copyBtn.addEventListener("click", async () => {
+    const baseUrl = window.location.origin;
+    const fullUrl = `${baseUrl}${publicLink.textContent.trim()}`;
+
+    try {
+      await navigator.clipboard.writeText(fullUrl);
+      showCopyToast(`✅ Link copied: ${fullUrl}`);
+    } catch (err) {
+      showCopyToast("❌ Unable to copy link");
+      console.error("Clipboard error:", err);
     }
   });
 });
+
+// 💫 ----------- TOAST MESSAGE ANIMATION -----------
+
+function showCopyToast(message) {
+  let toast = document.getElementById("copyToast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "copyToast";
+    toast.style.position = "fixed";
+    toast.style.top = "20px";
+    toast.style.right = "20px";
+    toast.style.padding = "10px 18px";
+    toast.style.background = "linear-gradient(135deg,#6366f1,#ec4899)";
+    toast.style.color = "#fff";
+    toast.style.fontSize = "0.9rem";
+    toast.style.borderRadius = "12px";
+    toast.style.boxShadow = "0 8px 24px rgba(0,0,0,0.3)";
+    toast.style.opacity = "0";
+    toast.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+    toast.style.zIndex = "9999";
+    document.body.appendChild(toast);
+  }
+
+  toast.textContent = message;
+  toast.style.opacity = "1";
+  toast.style.transform = "translateY(0)";
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(-10px)";
+  }, 2500);
+}
