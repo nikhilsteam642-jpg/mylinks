@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Sign up • Social Link Hub{% endblock %}
+
+{% block content %}
+<main class="auth-main">
+  <section class="auth-card">
+    <h1 class="auth-title">Create account</h1>
+    <p class="auth-subtitle">One login, your own link hub.</p>
+
+    <form method="POST" action="{{ url_for('register') }}" class="auth-form">
+      <div class="field-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="your_name"
+          required
+        />
+      </div>
+
+      <div class="field-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="••••••••"
+          required
+        />
+      </div>
+
+      <div class="field-group">
+        <label for="confirm">Confirm password</label>
+        <input
+          type="password"
+          id="confirm"
+          name="confirm"
+          placeholder="••••••••"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary full-width">
+        Sign up
+      </button>
+    </form>
+
+    <p class="auth-footer-text">
+      Already have an account?
+      <a href="{{ url_for('login') }}">Sign in</a>
+    </p>
+  </section>
+</main>
+{% endblock %}

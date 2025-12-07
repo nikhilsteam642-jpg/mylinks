@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}{{ username }} • Social Link Hub{% endblock %}
+
+{% block content %}
+<main class="public-main">
+  {% if not profile %}
+    <div class="public-empty">
+      <h1>No profile yet</h1>
+      <p>This user hasn’t set up their link hub.</p>
+    </div>
+  {% else %}
+    <section class="public-card-wrap">
+      <div class="profile-card">
+        <div class="profile-glow"></div>
+
+        <div class="avatar">
+          {% if profile["avatar"] %}
+            <img
+              src="{{ url_for('static', filename=profile['avatar']) }}?v={{ avatar_version }}"
+              alt="Profile picture"
+            />
+          {% else %}
+            <span>✨</span>
+          {% endif %}
+        </div>
+
+        <div class="profile-name">
+          {{ profile["name"] or username }}
+        </div>
+        <div class="profile-tag">@{{ username }}</div>
+
+        <p class="profile-bio">
+          {{ profile["bio"] or "This person hasn’t written a bio yet." }}
+        </p>
+
+        <div class="link-list">
+          {% if profile["instagram"] %}
+          <a href="{{ profile['instagram'] }}" target="_blank" class="link-btn instagram">
+            <span class="icon">📸</span><span>Instagram</span>
+          </a>
+          {% endif %}
+
+          {% if profile["twitter"] %}
+          <a href="{{ profile['twitter'] }}" target="_blank" class="link-btn twitter">
+            <span class="icon">🐦</span><span>X (Twitter)</span>
+          </a>
+          {% endif %}
+
+          {% if profile["youtube"] %}
+          <a href="{{ profile['youtube'] }}" target="_blank" class="link-btn youtube">
+            <span class="icon">▶️</span><span>YouTube</span>
+          </a>
+          {% endif %}
+
+          {% if profile["linkedin"] %}
+          <a href="{{ profile['linkedin'] }}" target="_blank" class="link-btn linkedin">
+            <span class="icon">💼</span><span>LinkedIn</span>
+          </a>
+          {% endif %}
+
+          {% if profile["github"] %}
+          <a href="{{ profile['github'] }}" target="_blank" class="link-btn github">
+            <span class="icon">💻</span><span>GitHub</span>
+          </a>
+          {% endif %}
+
+          {% if profile["customUrl"] %}
+          <a href="{{ profile['customUrl'] }}" target="_blank" class="link-btn">
+            <span class="icon">🔗</span><span>{{ profile["customLabel"] or "Custom Link" }}</span>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+  {% endif %}
+</main>
+{% endblock %}

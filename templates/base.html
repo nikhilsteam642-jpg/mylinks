@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Social Link Hub{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-logo">
+          <span class="logo-orb"></span>
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Social Link Hub</div>
+          <div class="brand-subtitle">All your links. One tiny universe.</div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        {% if g.user %}
+          <span class="user-tag">
+            Signed in as <strong>{{ g.user["username"] }}</strong>
+          </span>
+          <a href="{{ url_for('logout') }}" class="btn btn-ghost small-btn">Logout</a>
+        {% else %}
+          <a href="{{ url_for('login') }}" class="btn btn-ghost small-btn">Sign in</a>
+          <a href="{{ url_for('register') }}" class="btn btn-primary small-btn">Sign up</a>
+        {% endif %}
+      </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-stack">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+    <footer class="app-footer">
+      <span>© 2025 Social Link Hub • Local demo</span>
+    </footer>
+  </div>
+
+  <!-- ✅ Load JS on every page -->
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
