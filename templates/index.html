@@ -149,30 +149,81 @@
               value="{{ profile.get('github', '') }}"
             />
           </div>
-          <div class="field-group">
-            <label for="customLabel">Custom label</label>
-            <input
-              type="text"
-              id="customLabel"
-              name="customLabel"
-              placeholder="Portfolio / Blog / Notion etc."
-              value="{{ profile.get('customLabel', '') }}"
-            />
-          </div>
+        </div>
+      </div>
+
+      <!-- Custom links (multiple) -->
+      <div class="section">
+        <h3 class="section-title">Custom links</h3>
+        <p class="section-subtitle">
+          Add extra links like Portfolio, Notion, Spotify, etc. You can add many 💫
+        </p>
+
+        <div id="customLinksContainer">
+          {% if custom_links and custom_links|length > 0 %}
+            {% for link in custom_links %}
+              <div class="field-row custom-link">
+                <div class="field-group">
+                  <label>Label</label>
+                  <input
+                    type="text"
+                    name="customLabel[]"
+                    {% if loop.first %}id="customLabel"{% endif %}
+                    placeholder="Label (e.g. Portfolio)"
+                    value="{{ link['label'] }}"
+                  />
+                </div>
+                <div class="field-group">
+                  <label>URL</label>
+                  <input
+                    type="url"
+                    name="customUrl[]"
+                    {% if loop.first %}id="customUrl"{% endif %}
+                    placeholder="https://your-site.com"
+                    value="{{ link['url'] }}"
+                  />
+                </div>
+                <button type="button" class="removeLink" style="align-self:flex-end; margin-bottom:0.2rem;">
+                  ❌
+                </button>
+              </div>
+            {% endfor %}
+          {% else %}
+            <!-- Default one empty row -->
+            <div class="field-row custom-link">
+              <div class="field-group">
+                <label>Label</label>
+                <input
+                  type="text"
+                  name="customLabel[]"
+                  id="customLabel"
+                  placeholder="Label (e.g. Portfolio)"
+                />
+              </div>
+              <div class="field-group">
+                <label>URL</label>
+                <input
+                  type="url"
+                  name="customUrl[]"
+                  id="customUrl"
+                  placeholder="https://your-site.com"
+                />
+              </div>
+              <button type="button" class="removeLink" style="align-self:flex-end; margin-bottom:0.2rem;">
+                ❌
+              </button>
+            </div>
+          {% endif %}
         </div>
 
-        <div class="field-row">
-          <div class="field-group">
-            <label for="customUrl">Custom URL</label>
-            <input
-              type="url"
-              id="customUrl"
-              name="customUrl"
-              placeholder="https://your-site.xyz"
-              value="{{ profile.get('customUrl', '') }}"
-            />
-          </div>
-        </div>
+        <button
+          type="button"
+          id="addLinkBtn"
+          class="btn btn-ghost small-btn"
+          style="margin-top:0.4rem;"
+        >
+          ➕ Add Another
+        </button>
       </div>
 
       <div class="form-footer">
@@ -219,58 +270,96 @@
         </p>
 
         <div class="link-list">
-          <a id="linkInstagram" class="link-btn instagram" target="_blank" style="display:none;">
+          <!-- Standard socials -->
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-btn instagram"
+            id="linkInstagram"
+            style="display: none;"
+          >
             <span class="icon">📸</span>
             <span>Instagram</span>
           </a>
 
-          <a id="linkTwitter" class="link-btn twitter" target="_blank" style="display:none;">
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-btn twitter"
+            id="linkTwitter"
+            style="display: none;"
+          >
             <span class="icon">🐦</span>
             <span>X (Twitter)</span>
           </a>
 
-          <a id="linkYoutube" class="link-btn youtube" target="_blank" style="display:none;">
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-btn youtube"
+            id="linkYoutube"
+            style="display: none;"
+          >
             <span class="icon">▶️</span>
             <span>YouTube</span>
           </a>
 
-          <a id="linkLinkedin" class="link-btn linkedin" target="_blank" style="display:none;">
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-btn linkedin"
+            id="linkLinkedin"
+            style="display: none;"
+          >
             <span class="icon">💼</span>
             <span>LinkedIn</span>
           </a>
 
-          <a id="linkGithub" class="link-btn github" target="_blank" style="display:none;">
+          <a
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-btn github"
+            id="linkGithub"
+            style="display: none;"
+          >
             <span class="icon">💻</span>
             <span>GitHub</span>
           </a>
 
-          <a id="linkCustom" class="link-btn" target="_blank" style="display:none;">
-            <span class="icon">🔗</span>
-            <span id="linkCustomLabel">Custom Link</span>
-          </a>
+          <!-- All saved custom links (server-side preview) -->
+          {% if custom_links %}
+            {% for link in custom_links %}
+              <a
+                href="{{ link['url'] }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="link-btn"
+              >
+                <span class="icon">🔗</span>
+                <span>{{ link['label'] or 'Custom link' }}</span>
+              </a>
+            {% endfor %}
+          {% endif %}
         </div>
 
-        <<div class="card-footer-note">
-  Your public link:
-  <code id="publicLink">/u/{{ g.user["username"] }}</code>
+        <div class="card-footer-note">
+          Your public link:
+          <code id="publicLink">/u/{{ g.user["username"] }}</code>
 
-  <button
-    type="button"
-    id="copyLinkBtn"
-    class="btn btn-ghost small-btn"
-    style="margin-left: 0.5rem;"
-  >
-    🔗 Copy Link
-  </button>
-</div>
-
-<p
-  id="copyMsg"
-  style="font-size: 0.75rem; color: #9ca3af; display: none; margin-top: 0.5rem;"
->
-  ✅ Link copied to clipboard!
-</p>
-
+          <button
+            type="button"
+            id="copyLinkBtn"
+            class="btn btn-ghost small-btn"
+            style="margin-left: 0.5rem;"
+          >
+            🔗 Copy Link
+          </button>
+        </div>
       </div>
     </div>
   </section>

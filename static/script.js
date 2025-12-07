@@ -136,3 +136,43 @@ function showCopyToast(message) {
     toast.style.transform = "translateY(-10px)";
   }, 2500);
 }
+// Add/remove custom link fields
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("customLinksContainer");
+  const addBtn = document.getElementById("addLinkBtn");
+
+  if (addBtn && container) {
+    addBtn.addEventListener("click", () => {
+      const div = document.createElement("div");
+      div.className = "field-row custom-link";
+      div.innerHTML = `
+        <div class="field-group">
+          <label>Label</label>
+          <input
+            type="text"
+            name="customLabel[]"
+            placeholder="Label (e.g. Portfolio)"
+          />
+        </div>
+        <div class="field-group">
+          <label>URL</label>
+          <input
+            type="url"
+            name="customUrl[]"
+            placeholder="https://your-site.com"
+          />
+        </div>
+        <button type="button" class="removeLink" style="align-self:flex-end; margin-bottom:0.2rem;">
+          ❌
+        </button>
+      `;
+      container.appendChild(div);
+    });
+
+    container.addEventListener("click", (e) => {
+      if (e.target.classList.contains("removeLink")) {
+        e.target.parentElement.remove();
+      }
+    });
+  }
+});
